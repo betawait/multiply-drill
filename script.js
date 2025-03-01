@@ -26,18 +26,42 @@ class MultiplicationGame {
     }
 
     startTimer() {
-        this.timerInterval = setInterval(() => {
-            this.timer++;
-            document.getElementById('timer').textContent = this.timer;
+        const totalTime = 60; // 1 minute in seconds
+        let timeLeft = totalTime;
+        
+        const timerElement = document.getElementById('timer');
+        const progressBar = document.getElementById('timer-progress');
+        
+        this.timer = setInterval(() => {
+            timeLeft--;
+            timerElement.textContent = timeLeft;
+            
+            // Update progress bar
+            const progressPercent = (timeLeft / totalTime) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(this.timer);
+                this.endGame();
+            }
         }, 1000);
     }
 
     generateProblem() {
         const difficulty = document.getElementById('difficulty').value;
-        const max = difficulty === 'easy' ? 5 : difficulty === 'medium' ? 10 : 12;
+        const difficultyNumbers = {
+            'easy': [1, 2, 5],
+            'medium': [3, 6],
+            'hard': [7, 8, 9]
+        };
+        const allNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         
-        const num1 = Math.floor(Math.random() * max) + 1;
-        const num2 = Math.floor(Math.random() * max) + 1;
+        // Get one number from the difficulty set
+        const currentNumbers = difficultyNumbers[difficulty];
+        const num1 = currentNumbers[Math.floor(Math.random() * currentNumbers.length)];
+        
+        // Get the other number from all possible numbers
+        const num2 = allNumbers[Math.floor(Math.random() * allNumbers.length)];
         const correctAnswer = num1 * num2;
         
         this.currentProblem = {
@@ -51,7 +75,10 @@ class MultiplicationGame {
         // Generate wrong answers
         let answers = [correctAnswer];
         while (answers.length < 3) {
-            const wrongAnswer = Math.floor(Math.random() * (max * max)) + 1;
+            // Get one number from difficulty set and one from all numbers
+            const wrongNum1 = currentNumbers[Math.floor(Math.random() * currentNumbers.length)];
+            const wrongNum2 = allNumbers[Math.floor(Math.random() * allNumbers.length)];
+            const wrongAnswer = wrongNum1 * wrongNum2;
             if (!answers.includes(wrongAnswer)) {
                 answers.push(wrongAnswer);
             }
@@ -103,6 +130,12 @@ class MultiplicationGame {
                 this.generateProblem();
             }
         }, 1000);
+    }
+
+    endGame() {
+        // ... existing end game code ...
+        const progressBar = document.getElementById('timer-progress');
+        progressBar.style.width = '0%';
     }
 }
 
