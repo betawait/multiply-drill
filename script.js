@@ -10,8 +10,10 @@ class MultiplicationGame {
             hard: new Set([7, 8, 9])
         };
         this.setupEventListeners();
-        this.loadSettings();
-        this.initializeSettings();
+        this.initializeDB().then(() => {
+            this.loadSettings();
+            this.initializeSettings();
+        });
     }
 
     setupEventListeners() {
@@ -75,16 +77,51 @@ class MultiplicationGame {
         }, 1000);
     }
 
-    loadSettings() {
-        const savedSettings = localStorage.getItem('multiplicationSettings');
-        if (savedSettings) {
-            const parsed = JSON.parse(savedSettings);
-            this.settings = {
-                easy: new Set(parsed.easy),
-                medium: new Set(parsed.medium),
-                hard: new Set(parsed.hard)
+    initializeDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('multiplicationGame', 1);
+
+            request.onerror = () => {
+                console.log('Error opening IndexedDB');
+                resolve(); // Still resolve so the game can work with defaults
             };
-        }
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('settings')) {
+                    db.createObjectStore('settings');
+                }
+            };
+
+            request.onsuccess = (event) => {
+                this.db = event.target.result;
+                resolve();
+            };
+        });
+    }
+
+    loadSettings() {
+        if (!this.db) return;
+
+        const transaction = this.db.transaction(['settings'], 'readonly');
+        const store = transaction.objectStore('settings');
+        const request = store.get('difficultySettings');
+
+        request.onsuccess = (event) => {
+            const savedSettings = event.target.result;
+            if (savedSettings) {
+                this.settings = {
+                    easy: new Set(savedSettings.easy),
+                    medium: new Set(savedSettings.medium),
+                    hard: new Set(savedSettings.hard)
+                };
+            }
+            this.createNumberGrids(); // Refresh grids with loaded settings
+        };
+
+        request.onerror = () => {
+            console.log('Error loading settings from IndexedDB');
+        };
     }
 
     initializeSettings() {
@@ -163,11 +200,17 @@ class MultiplicationGame {
             this.settings[difficulty] = selectedNumbers;
         });
 
-        localStorage.setItem('multiplicationSettings', JSON.stringify({
-            easy: Array.from(this.settings.easy),
-            medium: Array.from(this.settings.medium),
-            hard: Array.from(this.settings.hard)
-        }));
+        if (this.db) {
+            const transaction = this.db.transaction(['settings'], 'readwrite');
+            const store = transaction.objectStore('settings');
+            const settingsToSave = {
+                easy: Array.from(this.settings.easy),
+                medium: Array.from(this.settings.medium),
+                hard: Array.from(this.settings.hard)
+            };
+            
+            store.put(settingsToSave, 'difficultySettings');
+        }
 
         const modal = bootstrap.Modal.getInstance(document.getElementById('settingsModal'));
         modal.hide();
