@@ -18,11 +18,12 @@
                         <div id="setup-screen">
                             <h3 class="text-center mb-3">Select Difficulty</h3>
                             <select id="difficulty" class="form-select mb-3">
-                                <option value="easy">Easy (practicing 1, 2, 5)</option>
-                                <option value="medium">Medium (practicing 3, 6)</option>
-                                <option value="hard">Hard (practicing 7, 8, 9)</option>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
                             </select>
-                            <button id="start-btn" class="btn btn-primary w-100">Start Game</button>
+                            <button id="start-btn" class="btn btn-primary w-100 mb-3">Start Game</button>
+                            <button id="settings-btn" class="btn btn-outline-secondary w-100">Settings</button>
                         </div>
 
                         <div id="game-screen" class="d-none">
@@ -43,8 +44,135 @@
                                 <button class="btn btn-outline-primary answer-option" type="button"></button>
                                 <button class="btn btn-outline-primary answer-option" type="button"></button>
                             </div>
+
+                            <div class="text-end">
+                                <button id="exit-btn" class="btn btn-outline-danger btn-sm">Exit</button>
+                            </div>
+                        </div>
+
+                        <div id="end-screen" class="d-none text-center">
+                            <h2 class="mb-4">Time's Up!</h2>
+                            <div class="final-score mb-4">
+                                <h3>Your Score: <span id="final-score">0</span></h3>
+                                <p class="text-muted">Problems solved correctly</p>
+                            </div>
+                            <button id="restart-btn" class="btn btn-primary">Play Again</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalLabel">Difficulty Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="difficultyTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="easy-tab" data-bs-toggle="tab" data-bs-target="#easy-settings" type="button" role="tab">Easy</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="medium-tab" data-bs-toggle="tab" data-bs-target="#medium-settings" type="button" role="tab">Medium</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="hard-tab" data-bs-toggle="tab" data-bs-target="#hard-settings" type="button" role="tab">Hard</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="difficultyTabContent">
+                        <div class="tab-pane fade show active" id="easy-settings" role="tabpanel">
+                            <div class="multiplication-grid-container">
+                                <div class="toggle-cell"></div>
+                                <div class="col-toggles">
+                                    <div class="col-toggle" data-col="1">1</div>
+                                    <div class="col-toggle" data-col="2">2</div>
+                                    <div class="col-toggle" data-col="3">3</div>
+                                    <div class="col-toggle" data-col="4">4</div>
+                                    <div class="col-toggle" data-col="5">5</div>
+                                    <div class="col-toggle" data-col="6">6</div>
+                                    <div class="col-toggle" data-col="7">7</div>
+                                    <div class="col-toggle" data-col="8">8</div>
+                                    <div class="col-toggle" data-col="9">9</div>
+                                </div>
+                                <div class="row-toggles">
+                                    <div class="row-toggle" data-row="1">1</div>
+                                    <div class="row-toggle" data-row="2">2</div>
+                                    <div class="row-toggle" data-row="3">3</div>
+                                    <div class="row-toggle" data-row="4">4</div>
+                                    <div class="row-toggle" data-row="5">5</div>
+                                    <div class="row-toggle" data-row="6">6</div>
+                                    <div class="row-toggle" data-row="7">7</div>
+                                    <div class="row-toggle" data-row="8">8</div>
+                                    <div class="row-toggle" data-row="9">9</div>
+                                </div>
+                                <div class="number-grid" data-difficulty="easy"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="medium-settings" role="tabpanel">
+                            <div class="multiplication-grid-container">
+                                <div class="toggle-cell"></div>
+                                <div class="col-toggles">
+                                    <div class="col-toggle" data-col="1">1</div>
+                                    <div class="col-toggle" data-col="2">2</div>
+                                    <div class="col-toggle" data-col="3">3</div>
+                                    <div class="col-toggle" data-col="4">4</div>
+                                    <div class="col-toggle" data-col="5">5</div>
+                                    <div class="col-toggle" data-col="6">6</div>
+                                    <div class="col-toggle" data-col="7">7</div>
+                                    <div class="col-toggle" data-col="8">8</div>
+                                    <div class="col-toggle" data-col="9">9</div>
+                                </div>
+                                <div class="row-toggles">
+                                    <div class="row-toggle" data-row="1">1</div>
+                                    <div class="row-toggle" data-row="2">2</div>
+                                    <div class="row-toggle" data-row="3">3</div>
+                                    <div class="row-toggle" data-row="4">4</div>
+                                    <div class="row-toggle" data-row="5">5</div>
+                                    <div class="row-toggle" data-row="6">6</div>
+                                    <div class="row-toggle" data-row="7">7</div>
+                                    <div class="row-toggle" data-row="8">8</div>
+                                    <div class="row-toggle" data-row="9">9</div>
+                                </div>
+                                <div class="number-grid" data-difficulty="medium"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="hard-settings" role="tabpanel">
+                            <div class="multiplication-grid-container">
+                                <div class="toggle-cell"></div>
+                                <div class="col-toggles">
+                                    <div class="col-toggle" data-col="1">1</div>
+                                    <div class="col-toggle" data-col="2">2</div>
+                                    <div class="col-toggle" data-col="3">3</div>
+                                    <div class="col-toggle" data-col="4">4</div>
+                                    <div class="col-toggle" data-col="5">5</div>
+                                    <div class="col-toggle" data-col="6">6</div>
+                                    <div class="col-toggle" data-col="7">7</div>
+                                    <div class="col-toggle" data-col="8">8</div>
+                                    <div class="col-toggle" data-col="9">9</div>
+                                </div>
+                                <div class="row-toggles">
+                                    <div class="row-toggle" data-row="1">1</div>
+                                    <div class="row-toggle" data-row="2">2</div>
+                                    <div class="row-toggle" data-row="3">3</div>
+                                    <div class="row-toggle" data-row="4">4</div>
+                                    <div class="row-toggle" data-row="5">5</div>
+                                    <div class="row-toggle" data-row="6">6</div>
+                                    <div class="row-toggle" data-row="7">7</div>
+                                    <div class="row-toggle" data-row="8">8</div>
+                                    <div class="row-toggle" data-row="9">9</div>
+                                </div>
+                                <div class="number-grid" data-difficulty="hard"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-settings">Save Settings</button>
                 </div>
             </div>
         </div>
