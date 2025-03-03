@@ -155,30 +155,41 @@ class MultiplicationGame {
             }
 
             // Add row toggle handlers
-            const rowToggles = grid.closest('.multiplication-grid-container').querySelectorAll('.row-toggle');
+            const container = grid.closest('.multiplication-grid-container');
+            const rowToggles = container.querySelectorAll('.row-toggle');
+            
             rowToggles.forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    const row = toggle.dataset.row;
-                    toggle.classList.toggle('selected');
-                    const isSelected = toggle.classList.contains('selected');
-                    
-                    grid.querySelectorAll(`.number-cell[data-row="${row}"]`).forEach(cell => {
-                        cell.classList.toggle('selected', isSelected);
+                // Remove old event listeners
+                const newToggle = toggle.cloneNode(true);
+                toggle.parentNode.replaceChild(newToggle, toggle);
+                
+                newToggle.addEventListener('click', () => {
+                    const row = newToggle.dataset.row;
+                    const cells = grid.querySelectorAll(`.number-cell[data-row="${row}"]`);
+                    const allSelected = Array.from(cells).every(cell => cell.classList.contains('selected'));
+                    cells.forEach(cell => {
+                        cell.classList.toggle('selected', !allSelected);
                     });
+                    newToggle.classList.toggle('selected', !allSelected);
                 });
             });
 
             // Add column toggle handlers
-            const colToggles = grid.closest('.multiplication-grid-container').querySelectorAll('.col-toggle');
+            const colToggles = container.querySelectorAll('.col-toggle');
+            
             colToggles.forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    const col = toggle.dataset.col;
-                    toggle.classList.toggle('selected');
-                    const isSelected = toggle.classList.contains('selected');
-                    
-                    grid.querySelectorAll(`.number-cell[data-col="${col}"]`).forEach(cell => {
-                        cell.classList.toggle('selected', isSelected);
+                // Remove old event listeners
+                const newToggle = toggle.cloneNode(true);
+                toggle.parentNode.replaceChild(newToggle, toggle);
+                
+                newToggle.addEventListener('click', () => {
+                    const col = newToggle.dataset.col;
+                    const cells = grid.querySelectorAll(`.number-cell[data-col="${col}"]`);
+                    const allSelected = Array.from(cells).every(cell => cell.classList.contains('selected'));
+                    cells.forEach(cell => {
+                        cell.classList.toggle('selected', !allSelected);
                     });
+                    newToggle.classList.toggle('selected', !allSelected);
                 });
             });
         });
