@@ -18,8 +18,8 @@ class MultiplicationGame {
         this.score = 0;
         this.timer = 0;
         document.getElementById('score').textContent = '0';
-        document.getElementById('setup-screen').classList.add('d-none');
-        document.getElementById('game-screen').classList.remove('d-none');
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
         
         this.startTimer();
         this.generateProblem();
