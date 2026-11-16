@@ -100,8 +100,8 @@ body {
 }
 
 .btn-option:hover:not(:disabled) {
-    color: #ffffff;
-    background-color: #0d6efd;
+    color: #0d6efd;
+    background-color: #e7f1ff;
 }
 
 .hidden {
