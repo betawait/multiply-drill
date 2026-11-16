@@ -14,8 +14,7 @@ This project is a simple multiplication drill game built with HTML, CSS, and Jav
 
 - HTML
 - CSS
-- JavaScript
-- Bootstrap 5 for styling
+- JavaScript (no external dependencies)
 
 ## How to run the project
 
